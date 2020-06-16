@@ -32,7 +32,7 @@ public class QuizServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         if (SessionUtils.getAttribute(request,"user") != null) {
-            context.getRequestDispatcher("/quiz/quiz.html").forward(request, response);
+            context.getRequestDispatcher("/static/quiz.html").forward(request, response);
         } else
             response.sendRedirect("/login?redirect_uri=http://localhost:8080/quiz");
     }
