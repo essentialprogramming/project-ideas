@@ -24,18 +24,18 @@ public class JPAConfig {
 
 
     @Bean(name = "hikariDataSource")
-    public HikariDataSource hikariDataSource(){
+    public HikariDataSource hikariDataSource() {
         HikariConfig config = new HikariConfig();
         config.setMinimumIdle(3);
         config.setMaximumPoolSize(10);
         config.setConnectionTimeout(3000);
         config.setIdleTimeout(TimeUnit.SECONDS.toMillis(10));
         config.setValidationTimeout(TimeUnit.SECONDS.toMillis(2));
-        config.setDriverClassName(org.postgresql.Driver.class.getName());
+        config.setDriverClassName(com.mysql.jdbc.Driver.class.getName());
 
-        config.setJdbcUrl("jdbc:postgresql://balarama.db.elephantsql.com:5432/ygjjdobc");
-        config.setUsername("ygjjdobc");
-        config.setPassword("5I2lA5c6Yf-sbEtfgEJ4lJtMYLvdtjTB");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/quiz");
+        config.setUsername("root");
+        config.setPassword("root");
 
         return new HikariDataSource(config);
     }
