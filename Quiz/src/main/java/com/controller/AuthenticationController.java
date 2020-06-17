@@ -1,6 +1,6 @@
 package com.controller;
 
-import com.model.User;
+import com.model.UserInput;
 import com.service.AuthenticationService;
 import com.util.web.SessionUtils;
 import com.web.json.JsonResponse;
@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -27,15 +26,15 @@ public class AuthenticationController {
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(hidden = true)
-    public JsonResponse authenticate(@QueryParam("redirect_uri") String redirectUri, User profileInput) {
+    public JsonResponse authenticate(@QueryParam("redirect_uri") String redirectUri, UserInput profileInput) {
         String username = profileInput.getUsername();
         String password = profileInput.getPassword();
 
-        User user = service.authenticate(username, password);
+        UserInput userInput = service.authenticate(username, password);
 
-        if (user != null) {
+        if (userInput != null) {
             final String url = redirectUri;
-            SessionUtils.setAttribute(httpRequest,"user", user);
+            SessionUtils.setAttribute(httpRequest,"user", userInput);
             return new JsonResponse()
                     .with("status", "Redirect")
                     .with("redirectUrl", url).done();
