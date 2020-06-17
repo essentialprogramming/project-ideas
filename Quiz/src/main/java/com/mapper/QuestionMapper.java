@@ -15,7 +15,7 @@ public class QuestionMapper {
         return QuestionJSON.builder()
                 .id(question.getId())
                 .question(question.getQuestion())
-                .answers(question.getAnswers().stream().map(Answer::getText).collect(Collectors.toList()))
+                .answers(question.getAnswers().stream().map(answer -> answer.getText().substring(2)).collect(Collectors.toList()))
                 .correctAnswer(question.getCorrectAnswer())
                 .quiz(question.getQuiz().getName())
                 .build();

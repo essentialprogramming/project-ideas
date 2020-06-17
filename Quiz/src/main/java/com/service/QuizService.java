@@ -7,6 +7,7 @@ import com.mapper.QuestionMapper;
 import com.mapper.QuizMapper;
 import com.model.QuestionInput;
 import com.model.QuizInput;
+import com.output.QuestionJSON;
 import com.output.QuizJSON;
 import com.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,17 @@ public class QuizService {
 
         return QuizMapper.entityToJson(quiz);
 
+    }
+
+    @Transactional
+    public Quiz findById(int id) {
+        return quizRepository.findById(id).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Quiz with id " + id + " not found."));
+    }
+
+    @Transactional
+    public List<QuestionJSON> getQuestionsByQuizId(int id) {
+        Quiz quiz = findById(id);
+        List<QuestionJSON> questions = quiz.getQuestions().stream().map(QuestionMapper::entityToJson).collect(Collectors.toList());
+        return questions;
     }
 }

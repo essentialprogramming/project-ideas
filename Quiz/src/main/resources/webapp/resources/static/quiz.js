@@ -33,10 +33,12 @@ let currentSlide = 0;
 let submitButton, previousButton, nextButton;
 let slides;
 
-docReady(function() {
+docReady(async function() {
+
+  let questions = transformJson(await getQuestions());
 
   // Kick things off
-  buildQuiz(myQuestions);
+  buildQuiz(questions);
 
   slides = document.querySelectorAll(".slide");
 
@@ -181,6 +183,23 @@ function transformJson(questions) {
     return json;
 }
 
+ async function getQuestions(){
+
+   let id = Utils.getRequestParameter("qId");
+          let url = '/api/questions?qId=' + id;
+          let response = await fetch(url)
+              .then(res => res.json())
+              .then(json => {
+                  return json;
+
+              })
+              .catch(function(error) {
+                  console.log(error);
+              });
+
+console.log(response)
+        return response;
+   }
 
 
 

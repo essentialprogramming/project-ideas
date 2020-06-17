@@ -30,9 +30,9 @@ public class QuestionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String quizName = request.getParameter("qname");
+        int quizId = Integer.parseInt((request.getParameter("qId")));
 
-        context.getRequestDispatcher("/static/quiz.html?qname= " + quizName).forward(request, response);
+        context.getRequestDispatcher("/static/quiz.html?qId= " + quizId).forward(request, response);
 
     }
 }

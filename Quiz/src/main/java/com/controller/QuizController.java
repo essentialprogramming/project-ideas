@@ -4,6 +4,7 @@ package com.controller;
 import com.entities.Question;
 import com.entities.Quiz;
 import com.model.QuizInput;
+import com.output.QuestionJSON;
 import com.output.QuizJSON;
 import com.service.QuizService;
 import com.web.json.JsonResponse;
@@ -29,11 +30,11 @@ public class QuizController {
     @GET
     @Path("/questions")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Question> getQuestionsByQuiz(@QueryParam("qname") String quizName) {
+    public List<QuestionJSON> getQuestionsByQuiz(@QueryParam("qId") int id) {
 
-        Quiz quiz = service.findQuizByName(quizName);
+        List<QuestionJSON> questions = service.getQuestionsByQuizId(id);
 
-        return quiz.getQuestions();
+        return questions;
 
     }
 

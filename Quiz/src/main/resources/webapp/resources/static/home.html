@@ -42,7 +42,7 @@
 
                 <td>${quiz.name}</td>
                 <td>
-                   <button onclick="startQuiz('${quiz.name}')">Start</button>
+                   <button onclick="startQuiz('${quiz.id}')">Start</button>
                 </td>
 
               </tr>
@@ -63,9 +63,8 @@
         return table;
     }
 
-    async function startQuiz(quizName){
-
-        window.location=`/question?qname=quizName`;
+    async function startQuiz(quizId){
+        window.location=`/question?qId=${quizId}`;
     }
 
 </script>
