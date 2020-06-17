@@ -15,13 +15,14 @@ import javax.ws.rs.ApplicationPath;
 @ApplicationPath("/api")
 public class ApplicationConfig extends ResourceConfig {
 
-	public ApplicationConfig() {
-		register(JacksonJaxbJsonProvider.class);
+    public ApplicationConfig() {
+        register(JacksonJaxbJsonProvider.class);
 
-		register(OpenApiResource.class);
-		register(AcceptHeaderOpenApiResource.class);
-		register(AuthenticationController.class);
+        register(OpenApiResource.class);
+        register(AcceptHeaderOpenApiResource.class);
+        register(AuthenticationController.class);
+        register(QuizController.class);
 
-	}
+    }
 
 }

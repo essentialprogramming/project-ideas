@@ -29,7 +29,7 @@ public class Quiz {
     @ManyToMany(mappedBy = "quizList", fetch = FetchType.EAGER)
     private List<User> students;
 
-    @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Question> questions;
 
 

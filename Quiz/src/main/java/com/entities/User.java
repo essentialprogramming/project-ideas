@@ -25,7 +25,7 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_quiz",
-            joinColumns = {@JoinColumn(name = "quiz_id")},
-            inverseJoinColumns = {@JoinColumn(name = "username")})
+            joinColumns = {@JoinColumn(name = "username", referencedColumnName = "username")},
+            inverseJoinColumns = {@JoinColumn(name = "quiz_id", referencedColumnName = "id")})
     private List<Quiz> quizList;
 }

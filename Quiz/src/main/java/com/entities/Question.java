@@ -22,13 +22,13 @@ public class Question {
     @Column(name = "question")
     private String question;
 
-    @Column(name = "correct_answer")
+    @Column(name = "correctAnswer")
     private String correctAnswer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Answer> answers;
 }

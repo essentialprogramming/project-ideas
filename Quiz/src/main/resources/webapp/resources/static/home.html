@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+    <script src="/js/header.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<div id='output'></div>
+
+<script>
+
+     docReady(async function () {
+
+        let items = await fetch('/api/quiz')
+            .then(res => res.json())
+            .then(json => {
+                return json;
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+
+        document.getElementById("output").innerHTML = json2Table(items);
+    });
+
+    function json2Table(json) {
+
+        let headerRow = `<tr>
+                      <th>Quiz name</th>
+                      <th>Action</th>
+                     </tr>`
+
+        let rows = json
+            .map(quiz => {
+                return `
+              <tr>
+
+                <td>${quiz.name}</td>
+                <td>
+                   <button onclick="startQuiz('${quiz.name}')">Start</button>
+                </td>
+
+              </tr>
+              `
+            });
+
+        const table = `
+        	<table>
+		      <thead>
+		    	<tr>${headerRow}</tr>
+		      <thead>
+		      <tbody>
+		    	${rows.join('')}
+		      <tbody>
+	        <table>
+        `;
+
+        return table;
+    }
+
+    async function startQuiz(quizName){
+
+        window.location=`/question?qname=quizName`;
+    }
+
+</script>
+
+</body>
+</html>

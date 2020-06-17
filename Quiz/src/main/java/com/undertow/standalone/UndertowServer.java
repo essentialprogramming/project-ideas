@@ -12,6 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.servlet.ServletException;
 
 import com.controller.*;
+import com.service.QuestionService;
 import com.util.jsp.TldLocator;
 import io.undertow.jsp.HackInstanceManager;
 import io.undertow.jsp.JspServletBuilder;
@@ -90,6 +91,9 @@ public final class UndertowServer {
                                 .setLoadOnStartup(1),
                         servlet("quiz", QuizServlet.class)
                                 .addMapping("/quiz/*")
+                                .setLoadOnStartup(1),
+                        servlet("question", QuestionServlet.class)
+                                .addMapping("/question/*")
                                 .setLoadOnStartup(1)
                 )
                 .addServlet(JspServletBuilder.createServlet("jspServlet", "*.jsp"));

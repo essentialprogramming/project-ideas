@@ -14,9 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-@WebServlet("quiz/*")
-public class QuizServlet extends HttpServlet {
+@WebServlet("question/*")
+public class QuestionServlet extends HttpServlet {
 
     @Inject
     private ServletContext context;
@@ -31,9 +30,9 @@ public class QuizServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        if (SessionUtils.getAttribute(request,"user") != null) {
-            context.getRequestDispatcher("/static/home.html").forward(request, response);
-        } else
-            response.sendRedirect("/login?redirect_uri=http://localhost:8080/quiz");
+        String quizName = request.getParameter("qname");
+
+        context.getRequestDispatcher("/static/quiz.html?qname= " + quizName).forward(request, response);
+
     }
 }
