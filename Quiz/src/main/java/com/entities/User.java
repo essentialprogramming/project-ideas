@@ -28,4 +28,7 @@ public class User {
             joinColumns = {@JoinColumn(name = "username", referencedColumnName = "username")},
             inverseJoinColumns = {@JoinColumn(name = "quiz_id", referencedColumnName = "id")})
     private List<Quiz> quizList;
+
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    private List<Evaluation> evaluations;
 }

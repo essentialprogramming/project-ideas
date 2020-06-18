@@ -22,6 +22,7 @@ public class ApplicationConfig extends ResourceConfig {
         register(AcceptHeaderOpenApiResource.class);
         register(AuthenticationController.class);
         register(QuizController.class);
+        register(EvaluationController.class);
 
     }
 

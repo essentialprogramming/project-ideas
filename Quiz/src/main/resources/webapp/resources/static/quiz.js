@@ -32,10 +32,11 @@ const myQuestions = [
 let currentSlide = 0;
 let submitButton, previousButton, nextButton;
 let slides;
+let questions;
 
 docReady(async function() {
 
-  let questions = transformJson(await getQuestions());
+  questions = transformJson(await getQuestions());
 
   // Kick things off
   buildQuiz(questions);
@@ -100,6 +101,11 @@ function buildQuiz(questions){
 
 function showResults(){
 
+    let result = {
+        quizId:0,
+        userAnswers:[]
+    };
+
     // gather answer containers from our quiz
     const quizContainer = document.getElementById('quiz');
     const answerContainers = quizContainer.querySelectorAll('.answers');
@@ -108,7 +114,7 @@ function showResults(){
     let numCorrect = 0;
 
     // for each question...
-    myQuestions.forEach( (currentQuestion, questionNumber) => {
+    questions.forEach( (currentQuestion, questionNumber) => {
 
         // find selected answer
         const answerContainer = answerContainers[questionNumber];
@@ -128,11 +134,21 @@ function showResults(){
             // color the answers red
             answerContainers[questionNumber].style.color = 'red';
         }
+        let item = {
+            questionId: currentQuestion.id,
+            answer:userAnswer
+        }
+        result.userAnswers.push(item);
+
     });
+
+    let quizId = Utils.getRequestParameter("qId");
+    result.quizId = parseInt(quizId);
+    sendEvaluation(JSON.stringify(result))
 
     // show number of correct answers out of total
     const resultsContainer = document.getElementById('results');
-    resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+    resultsContainer.innerHTML = `${numCorrect} out of ${questions.length}`;
 }
 
 
@@ -199,8 +215,36 @@ function transformJson(questions) {
 
 console.log(response)
         return response;
-   }
+ }
 
+
+ function sendEvaluation( result){
+
+    let evaluationPromise = new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/evaluation');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = (response) => resolve(response.currentTarget.responseText);
+        xhr.onerror = () => reject(xhr.statusText);
+
+        xhr.send(result);
+    });
+
+    evaluationPromise
+         .then(responseText => {
+                let json = JSON.parse(responseText);
+         if (json.response.status !== "Error"){
+                console.log("Success")
+         }
+         else{
+               console.log("error");
+         }
+        })
+        .catch(function(error) {
+                console.log(error);
+        });
+
+ }
 
 
 
