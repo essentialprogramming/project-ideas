@@ -63,6 +63,7 @@
             .then(responseText => {
                let json = JSON.parse(responseText);
                if (json.response.status !== "Error"){
+                 sessionStorage.username = data.username;
                  window.location.replace(json.response.redirectUrl);
              } else{
                  document.getElementById("error").innerHTML = json.response.error;

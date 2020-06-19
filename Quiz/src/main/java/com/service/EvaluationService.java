@@ -13,12 +13,10 @@ import com.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class EvaluationService {
@@ -37,6 +35,7 @@ public class EvaluationService {
         this.questionRepository = questionRepository;
     }
 
+    @Transactional
     public EvaluationJSON addEvaluation(EvaluationInput input) {
 
         Evaluation evaluation = EvaluationMapper.evaluationToEntity(input);
@@ -52,8 +51,29 @@ public class EvaluationService {
             evaluation.addUserAnswer(userAnswer);
         }
 
+        evaluation.setScore(compute(input));
         evaluationRepository.save(evaluation);
 
         return EvaluationMapper.entityToJson(evaluation);
+    }
+
+    @Transactional
+    public String compute(EvaluationInput input) {
+
+        int correctAnswers = 0;
+        Quiz quiz = quizRepository.findById(input.getQuizId()).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Quiz with id " + input.getQuizId() + " not found."));
+
+        for (AnswerInput answerInput : input.getUserAnswers()) {
+
+            Question question = questionRepository.findById(answerInput.getQuestionId()).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Question with id " + answerInput.getQuestionId() + " not found."));
+
+            if (question.getCorrectAnswer().equals(answerInput.getAnswer())) {
+                correctAnswers++;
+            }
+        }
+
+        String result = correctAnswers + " of " + quiz.getQuestions().size();
+        return result;
+
     }
 }

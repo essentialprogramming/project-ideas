@@ -3,7 +3,9 @@ package com.entities;
 
 import lombok.*;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -34,6 +36,13 @@ public class Quiz {
 
     @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
     private List<Evaluation> evaluations;
+
+    public void addStudent(User user) {
+        if (students == null) {
+            students = new ArrayList<>();
+        }
+        students.add(user);
+    }
 
 
 }

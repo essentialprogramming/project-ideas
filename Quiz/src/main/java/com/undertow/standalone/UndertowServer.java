@@ -94,6 +94,9 @@ public final class UndertowServer {
                                 .setLoadOnStartup(1),
                         servlet("question", QuestionServlet.class)
                                 .addMapping("/question/*")
+                                .setLoadOnStartup(1),
+                        servlet("score", ScoreServlet.class)
+                                .addMapping("/score/*")
                                 .setLoadOnStartup(1)
                 )
                 .addServlet(JspServletBuilder.createServlet("jspServlet", "*.jsp"));

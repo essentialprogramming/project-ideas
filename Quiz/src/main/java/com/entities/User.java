@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -31,4 +32,23 @@ public class User {
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Evaluation> evaluations;
+
+    public User(@Email String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public void addQuiz(Quiz quiz) {
+
+        if (quizList == null) {
+            quizList = new ArrayList<>();
+            quizList.add(quiz);
+        }
+
+        else if (!quizList.contains(quiz)) {
+            quizList.add(quiz);
+        }
+    }
+
+
 }

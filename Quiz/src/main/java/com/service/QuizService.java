@@ -1,29 +1,37 @@
 package com.service;
 
-import com.entities.Answer;
-import com.entities.Question;
-import com.entities.Quiz;
+import com.entities.*;
+import com.mapper.EvaluationMapper;
 import com.mapper.QuestionMapper;
 import com.mapper.QuizMapper;
 import com.model.QuestionInput;
 import com.model.QuizInput;
+import com.output.EvaluationJSON;
 import com.output.QuestionJSON;
 import com.output.QuizJSON;
 import com.repository.QuizRepository;
+import com.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class QuizService {
 
-    @Autowired
     private QuizRepository quizRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    public QuizService(QuizRepository quizRepository, UserRepository userRepository) {
+        this.quizRepository = quizRepository;
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     public List<QuizJSON> getAll() {
@@ -65,5 +73,33 @@ public class QuizService {
         Quiz quiz = findById(id);
         List<QuestionJSON> questions = quiz.getQuestions().stream().map(QuestionMapper::entityToJson).collect(Collectors.toList());
         return questions;
+    }
+
+    @Transactional
+    public void assignQuizToUser(int quizId, String username) {
+        Quiz quiz = findById(quizId);
+        User user = userRepository.findById(username).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "User " + username + " not found."));
+
+        user.addQuiz(quiz);
+    }
+
+    @Transactional
+    public List<EvaluationJSON> getQuizListWithScores(String username) {
+
+        User user = userRepository.findById(username).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "User " + username + " not found."));
+        List<Evaluation> result = new ArrayList<>();
+
+        List<Quiz> quizList = user.getQuizList();
+        quizList.forEach(quiz -> {
+            if (quiz.getEvaluations() != null) {
+                quiz.getEvaluations().forEach(evaluation -> {
+                    if (!evaluation.getScore().isEmpty() && evaluation.getStudent().equals(user)) {
+                        result.add(evaluation);
+                    }
+                });
+            }
+        });
+
+        return result.stream().map(EvaluationMapper::entityToJson).collect(Collectors.toList());
     }
 }

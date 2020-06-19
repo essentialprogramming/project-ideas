@@ -43,4 +43,15 @@ public class AuthenticationController {
                     .with("status", "Error")
                     .with("error", "The username or password you entered is incorrect.").done();
     }
+
+    @POST
+    @Path("register")
+    @Consumes("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonResponse register(UserInput profileInput) {
+        service.register(profileInput);
+        return new JsonResponse()
+                .with("status", "OK")
+                .done();
+    }
 }
