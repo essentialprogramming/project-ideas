@@ -143,7 +143,12 @@ function showResults(){
     });
 
     let quizId = Utils.getRequestParameter("qId");
+
+    let user = sessionStorage.username;
+    console.log(user);
+
     result.quizId = parseInt(quizId);
+    result.username=user;
     sendEvaluation(JSON.stringify(result))
 
     // show number of correct answers out of total

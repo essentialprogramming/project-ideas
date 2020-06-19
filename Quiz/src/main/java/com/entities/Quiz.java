@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class Quiz {
     @Column(name = "level")
     private String level;
 
+    @Column(name = "date")
+    private LocalDate date;
+
     @ManyToMany(mappedBy = "quizList", fetch = FetchType.EAGER)
     private List<User> students;
 
@@ -40,8 +44,11 @@ public class Quiz {
     public void addStudent(User user) {
         if (students == null) {
             students = new ArrayList<>();
+            students.add(user);
         }
-        students.add(user);
+        else if(!students.contains(user)){
+            students.add(user);
+        }
     }
 
 

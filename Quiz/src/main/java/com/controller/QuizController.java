@@ -25,8 +25,8 @@ public class QuizController {
     @GET
     @Path("/quiz")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<QuizJSON> getAll() {
-        return service.getAll();
+    public List<QuizJSON> getAll(@QueryParam("username") String username) {
+        return service.getAll(username);
     }
 
     @GET

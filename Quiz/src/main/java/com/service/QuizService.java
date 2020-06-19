@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,8 +35,12 @@ public class QuizService {
     }
 
     @Transactional
-    public List<QuizJSON> getAll() {
-        return quizRepository.findAll().stream().map(QuizMapper::entityToJson).collect(Collectors.toList());
+    public List<QuizJSON> getAll(String username) {
+        User user = userRepository.findById(username).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "User " + username + " not found."));
+
+        if (user.getQuizList() != null) {
+            return user.getQuizList().stream().map(QuizMapper::entityToJson).collect(Collectors.toList());
+        } else return new ArrayList<>();
     }
 
     @Transactional
@@ -57,6 +62,7 @@ public class QuizService {
             question.setQuiz(quiz);
             question.getAnswers().forEach(answer -> answer.setQuestion(question));
         });
+        quiz.setDate(LocalDate.now());
         quizRepository.save(quiz);
 
         return QuizMapper.entityToJson(quiz);
@@ -80,6 +86,7 @@ public class QuizService {
         Quiz quiz = findById(quizId);
         User user = userRepository.findById(username).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "User " + username + " not found."));
 
+        quiz.addStudent(user);
         user.addQuiz(quiz);
     }
 
@@ -90,15 +97,16 @@ public class QuizService {
         List<Evaluation> result = new ArrayList<>();
 
         List<Quiz> quizList = user.getQuizList();
-        quizList.forEach(quiz -> {
+
+        for (Quiz quiz : quizList) {
             if (quiz.getEvaluations() != null) {
                 quiz.getEvaluations().forEach(evaluation -> {
                     if (!evaluation.getScore().isEmpty() && evaluation.getStudent().equals(user)) {
                         result.add(evaluation);
                     }
                 });
-            }
-        });
+            } else return new ArrayList<>();
+        }
 
         return result.stream().map(EvaluationMapper::entityToJson).collect(Collectors.toList());
     }

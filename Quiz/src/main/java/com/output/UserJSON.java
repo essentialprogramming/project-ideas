@@ -1,14 +1,14 @@
-package com.model;
-
+package com.output;
 
 import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserInput {
+public class UserJSON {
 
     private String username;
     private String password;

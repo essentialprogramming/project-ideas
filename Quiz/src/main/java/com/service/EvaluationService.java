@@ -39,9 +39,11 @@ public class EvaluationService {
     public EvaluationJSON addEvaluation(EvaluationInput input) {
 
         Evaluation evaluation = EvaluationMapper.evaluationToEntity(input);
+        User user = userRepository.findById(input.getUsername()).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "User " + input.getUsername() + " not found."));
 
         Quiz quiz = quizRepository.findById(input.getQuizId()).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Quiz with id " + input.getQuizId() + " not found."));
         evaluation.setQuiz(quiz);
+        evaluation.setStudent(user);
 
         for (AnswerInput answerInput : input.getUserAnswers()) {
             Question question = questionRepository.findById(answerInput.getQuestionId()).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Question with id " + answerInput.getQuestionId() + " not found."));

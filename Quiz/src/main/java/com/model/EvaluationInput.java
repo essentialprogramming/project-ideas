@@ -17,4 +17,5 @@ public class EvaluationInput {
 
     private int quizId;
     private List<AnswerInput> userAnswers;
+    private String username;
 }

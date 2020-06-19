@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.model.UserInput;
+import com.output.UserJSON;
 import com.util.web.SessionUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -31,8 +32,8 @@ public class ScoreServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         if (SessionUtils.getAttribute(request,"user") != null) {
-            UserInput userInput = SessionUtils.getAttribute(request,"user");
-            context.getRequestDispatcher("/static/score.html?username= " + userInput.getUsername()).forward(request, response);
+            UserJSON userJSON = SessionUtils.getAttribute(request,"user");
+            context.getRequestDispatcher("/static/score.html?username= " + userJSON.getUsername()).forward(request, response);
         } else
             response.sendRedirect("/login?redirect_uri=http://localhost:8080/score");
 

@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.model.UserInput;
+import com.output.UserJSON;
 import com.service.AuthenticationService;
 import com.util.web.SessionUtils;
 import com.web.json.JsonResponse;
@@ -28,13 +29,12 @@ public class AuthenticationController {
     @Operation(hidden = true)
     public JsonResponse authenticate(@QueryParam("redirect_uri") String redirectUri, UserInput profileInput) {
         String username = profileInput.getUsername();
-        String password = profileInput.getPassword();
 
-        UserInput userInput = service.authenticate(username, password);
+        UserJSON userJSON = service.authenticate(username);
 
-        if (userInput != null) {
+        if (userJSON != null) {
             final String url = redirectUri;
-            SessionUtils.setAttribute(httpRequest,"user", userInput);
+            SessionUtils.setAttribute(httpRequest,"user", userJSON);
             return new JsonResponse()
                     .with("status", "Redirect")
                     .with("redirectUrl", url).done();
