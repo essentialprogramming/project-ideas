@@ -11,8 +11,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.ServletException;
 
-import com.controller.*;
-import com.service.QuestionService;
 import com.util.jsp.TldLocator;
 import io.undertow.jsp.HackInstanceManager;
 import io.undertow.jsp.JspServletBuilder;
@@ -37,13 +35,6 @@ import io.undertow.server.handlers.resource.ClassPathResourceManager;
 import io.undertow.server.handlers.resource.ResourceHandler;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
-import io.undertow.websockets.WebSocketConnectionCallback;
-import io.undertow.websockets.WebSocketProtocolHandshakeHandler;
-import io.undertow.websockets.core.AbstractReceiveListener;
-import io.undertow.websockets.core.BufferedTextMessage;
-import io.undertow.websockets.core.WebSocketChannel;
-import io.undertow.websockets.core.WebSockets;
-import io.undertow.websockets.spi.WebSocketHttpExchange;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -77,7 +68,7 @@ public final class UndertowServer {
                 .setContextPath("/")
                 .addListeners(createContextLoaderListener(getSpringApplicationContext()))
                 .setResourceManager(new ClassPathResourceManager(Server.class.getClassLoader(), "webapp/resources"))
-                .addWelcomePage("quiz.html")
+                .addWelcomePage("index.html")
                 .setDeploymentName(deploymentName)
 
                 .addServlets(
@@ -85,19 +76,7 @@ public final class UndertowServer {
                                 .addInitParam("javax.ws.rs.Application", ApplicationConfig.class.getName())
                                 .addMapping("/api/*")
                                 .setLoadOnStartup(1)
-                                .setAsyncSupported(true),
-                        servlet("loginServlet", LoginServlet.class)
-                                .addMapping("/login/*")
-                                .setLoadOnStartup(1),
-                        servlet("quiz", QuizServlet.class)
-                                .addMapping("/quiz/*")
-                                .setLoadOnStartup(1),
-                        servlet("question", QuestionServlet.class)
-                                .addMapping("/question/*")
-                                .setLoadOnStartup(1),
-                        servlet("score", ScoreServlet.class)
-                                .addMapping("/score/*")
-                                .setLoadOnStartup(1)
+                                .setAsyncSupported(true)
                 )
                 .addServlet(JspServletBuilder.createServlet("jspServlet", "*.jsp"));
 
@@ -113,9 +92,8 @@ public final class UndertowServer {
 
         //Open API resource handler
         final ResourceHandler resourceHandler = new ResourceHandler(new ClassPathResourceManager(Server.class.getClassLoader(), "apidoc"))
-                .addWelcomeFiles("quiz.html")
+                .addWelcomeFiles("index.html")
                 .setDirectoryListingEnabled(false);
-
 
 
         final PathHandler pathHandler = Handlers.path()

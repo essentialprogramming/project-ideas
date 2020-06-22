@@ -1,7 +1,6 @@
 package com.config;
 
 
-import com.controller.*;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import io.swagger.v3.jaxrs2.integration.resources.AcceptHeaderOpenApiResource;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
@@ -20,9 +19,7 @@ public class ApplicationConfig extends ResourceConfig {
 
         register(OpenApiResource.class);
         register(AcceptHeaderOpenApiResource.class);
-        register(AuthenticationController.class);
-        register(QuizController.class);
-        register(EvaluationController.class);
+        register(CustomerController.class);
 
     }
 

@@ -1,9 +1,9 @@
 package com.repository;
 
-import com.entities.User;
+import com.entities.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface OrderRepository extends JpaRepository<Order, Integer> {
 }

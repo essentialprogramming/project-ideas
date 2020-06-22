@@ -33,7 +33,7 @@ public class JPAConfig {
         config.setValidationTimeout(TimeUnit.SECONDS.toMillis(2));
         config.setDriverClassName(com.mysql.jdbc.Driver.class.getName());
 
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/quiz");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/order");
         config.setUsername("root");
         config.setPassword("root");
 

@@ -1,12 +1,10 @@
 package com.repository;
 
-import com.entities.Quiz;
+
+import com.entities.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface QuizRepository extends JpaRepository<Quiz,Integer> {
-
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 }
