@@ -70,5 +70,12 @@ public class QuizController {
         return service.getQuizListWithScores(username);
     }
 
+    @GET
+    @Path("/quiz/filter")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<QuizJSON> getQuizListByFiler(@QueryParam("username") String username, @QueryParam("date") String date, @QueryParam("year") int year, @QueryParam("groupNumber") String groupNumber) {
+        return service.getQuizList(username, date, year, groupNumber);
+    }
+
 
 }

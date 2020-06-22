@@ -110,4 +110,27 @@ public class QuizService {
 
         return result.stream().map(EvaluationMapper::entityToJson).collect(Collectors.toList());
     }
+
+    @Transactional
+    public List<QuizJSON> getQuizList(String username, String date, int year, String groupNumber) {
+
+        List<Quiz> result;
+        List<Quiz> quizList = quizRepository.findAll();
+
+        User user = userRepository.findById(username).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "User " + username + " not found."));
+
+        result = quizList.stream()
+                .filter(quiz -> quiz.getDate() != null &&
+                        quiz.getDate().isAfter(LocalDate.parse(date)))
+
+                .filter(quiz -> quiz.getStudents() != null &&
+                        quiz.getStudents().contains(user) &&
+                        user.getQuizList().contains(quiz) &&
+                        user.getYear() == year &&
+                        user.getGroup().equals(groupNumber))
+
+                .collect(Collectors.toList());
+
+        return result.stream().map(QuizMapper::entityToJson).collect(Collectors.toList());
+    }
 }

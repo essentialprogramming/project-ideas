@@ -20,4 +20,5 @@ public class QuizJSON {
     private String level;
     private List<String> students;
     private List<String> questions;
+    private String date;
 }

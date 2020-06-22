@@ -12,7 +12,7 @@ public class UserMapper {
                 .username(input.getUsername())
                 .password(input.getPassword())
                 .year(input.getYear())
-                .group(input.getPassword())
+                .group(input.getGroup())
                 .build();
     }
 

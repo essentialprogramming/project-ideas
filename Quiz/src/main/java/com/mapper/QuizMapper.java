@@ -16,6 +16,7 @@ public class QuizMapper {
                 .id(quiz.getId())
                 .name(quiz.getName())
                 .level(quiz.getLevel())
+                .date(String.valueOf(quiz.getDate()))
                 .students(quiz.getStudents() != null ? quiz.getStudents().stream().map(User::getUsername).collect(Collectors.toList()) : new ArrayList<>())
                 .questions(quiz.getQuestions().stream().map(Question::getQuestion).collect(Collectors.toList()))
                 .build();
