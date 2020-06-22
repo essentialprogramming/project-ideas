@@ -27,7 +27,7 @@ public class Customer {
     private String lastName;
 
     /**
-     * mappedBy = "customer" - customer is the exact name of the field in the Order entity that connects Order to Customer
+     * mappedBy = "customer" - customer is the exact name of the field in the Order entity that connects Order with Customer
      */
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Order> orders;

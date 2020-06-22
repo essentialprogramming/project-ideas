@@ -30,10 +30,10 @@ public class Item {
     /**
      * JoinTable(name = "order_line" - order_line represents the join table between Item and Order
      * joinColumns = {@JoinColumn(name = "item_id", referencedColumnName = "id")}
-     *      - item_id is the column name from order_line table that keeps the connection to the item
+     *      - item_id is the column name from order_line table that keeps the connection with the item table
      *      - represents the table from which the connection starts
      * inverseJoinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")})
-     *      - order_id is the column name from order_line table that keeps the connection to the order
+     *      - order_id is the column name from order_line table that keeps the connection with the order table
      *      - represents the table to which it is connected
      */
     @ManyToMany(cascade = CascadeType.MERGE)
