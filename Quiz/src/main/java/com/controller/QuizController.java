@@ -1,8 +1,6 @@
 package com.controller;
 
 
-import com.entities.Question;
-import com.entities.Quiz;
 import com.model.QuizInput;
 import com.output.EvaluationJSON;
 import com.output.QuestionJSON;
@@ -10,7 +8,6 @@ import com.output.QuizJSON;
 import com.service.QuizService;
 import com.web.json.JsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

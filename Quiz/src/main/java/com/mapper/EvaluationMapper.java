@@ -12,7 +12,6 @@ public class EvaluationMapper {
     public static Evaluation evaluationToEntity(EvaluationInput input) {
 
         return Evaluation.builder()
-//                .score(input.getScore())
                 .build();
     }
 

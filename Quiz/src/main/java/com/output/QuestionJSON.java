@@ -1,11 +1,8 @@
 package com.output;
 
 
-import com.entities.Answer;
-import com.entities.Quiz;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Builder

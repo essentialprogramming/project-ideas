@@ -1,6 +1,5 @@
 package com.controller;
 
-import com.model.UserInput;
 import com.output.UserJSON;
 import com.util.web.SessionUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;

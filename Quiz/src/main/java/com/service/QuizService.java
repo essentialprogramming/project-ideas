@@ -44,17 +44,6 @@ public class QuizService {
     }
 
     @Transactional
-    public QuizJSON findByName(String name) {
-        Quiz quiz = quizRepository.findByName(name).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Quiz with name " + name + " not found."));
-        return QuizMapper.entityToJson(quiz);
-    }
-
-    @Transactional
-    public Quiz findQuizByName(String name) {
-        return quizRepository.findByName(name).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Quiz with name " + name + " not found."));
-    }
-
-    @Transactional
     public QuizJSON addQuiz(QuizInput input) {
 
         Quiz quiz = QuizMapper.quizToEntity(input);

@@ -1,8 +1,6 @@
 package com.model;
 
 
-import com.entities.Answer;
-import com.entities.UserAnswer;
 import lombok.*;
 
 import java.util.List;

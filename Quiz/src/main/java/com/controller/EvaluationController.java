@@ -1,7 +1,6 @@
 package com.controller;
 
 import com.model.EvaluationInput;
-import com.output.EvaluationJSON;
 import com.service.EvaluationService;
 import com.web.json.JsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;

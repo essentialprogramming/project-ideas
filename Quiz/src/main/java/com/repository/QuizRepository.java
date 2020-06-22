@@ -9,5 +9,4 @@ import java.util.Optional;
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz,Integer> {
 
-    Optional<Quiz> findByName(String name);
 }
