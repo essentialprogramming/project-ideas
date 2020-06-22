@@ -25,7 +25,7 @@ create table if not exists quiz
 	id smallint NOT NULL AUTO_INCREMENT primary key,
 	name text,
 	level text,
-	date DATE
+	date text
 );
 
 create table if not exists user_quiz

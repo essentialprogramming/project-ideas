@@ -30,7 +30,7 @@ public class Quiz {
     private String level;
 
     @Column(name = "date")
-    private LocalDate date;
+    private String date;
 
     @ManyToMany(mappedBy = "quizList", fetch = FetchType.EAGER)
     private List<User> students;

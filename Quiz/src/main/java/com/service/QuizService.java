@@ -4,13 +4,13 @@ import com.entities.*;
 import com.mapper.EvaluationMapper;
 import com.mapper.QuestionMapper;
 import com.mapper.QuizMapper;
-import com.model.QuestionInput;
 import com.model.QuizInput;
 import com.output.EvaluationJSON;
 import com.output.QuestionJSON;
 import com.output.QuizJSON;
 import com.repository.QuizRepository;
 import com.repository.UserRepository;
+import com.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -62,7 +62,7 @@ public class QuizService {
             question.setQuiz(quiz);
             question.getAnswers().forEach(answer -> answer.setQuestion(question));
         });
-        quiz.setDate(LocalDate.now());
+        quiz.setDate(String.valueOf(LocalDate.now()));
         quizRepository.save(quiz);
 
         return QuizMapper.entityToJson(quiz);
@@ -114,20 +114,27 @@ public class QuizService {
     @Transactional
     public List<QuizJSON> getQuizList(String username, String date, int year, String groupNumber) {
 
-        List<Quiz> result;
         List<Quiz> quizList = quizRepository.findAll();
 
-        User user = userRepository.findById(username).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "User " + username + " not found."));
+        List<Quiz> result = quizList.stream()
 
-        result = quizList.stream()
-                .filter(quiz -> quiz.getDate() != null &&
-                        quiz.getDate().isAfter(LocalDate.parse(date)))
+                .filter(quiz -> username == null ||
+                        username != null &&
+                                quiz.getStudents().stream().anyMatch(student -> student.getUsername().equals(username))
+                )
 
-                .filter(quiz -> quiz.getStudents() != null &&
-                        quiz.getStudents().contains(user) &&
-                        user.getQuizList().contains(quiz) &&
-                        user.getYear() == year &&
-                        user.getGroup().equals(groupNumber))
+                .filter(quiz -> date == null || date != null &&
+                        DateUtil.isBefore(quiz.getDate(), date))
+
+                .filter(quiz -> year == 0 ||
+                        year != 0 && quiz.getStudents() != null &&
+                                quiz.getStudents().stream().anyMatch(student -> student.getYear() == year)
+                )
+
+                .filter(quiz -> groupNumber == null ||
+                        groupNumber != null &&
+                                quiz.getStudents().stream().anyMatch(student -> student.getGroup().equals(groupNumber))
+                )
 
                 .collect(Collectors.toList());
 
