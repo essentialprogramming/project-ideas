@@ -47,7 +47,7 @@ public class QuizService {
     public QuizJSON addQuiz(QuizInput input) {
 
         Quiz quiz = QuizMapper.quizToEntity(input);
-        quiz.getQuestions().forEach(question -> {
+        quiz.getQuestions().values().forEach(question -> {
             question.setQuiz(quiz);
             question.getAnswers().forEach(answer -> answer.setQuestion(question));
         });
@@ -66,7 +66,7 @@ public class QuizService {
     @Transactional
     public List<QuestionJSON> getQuestionsByQuizId(int id) {
         Quiz quiz = findById(id);
-        List<QuestionJSON> questions = quiz.getQuestions().stream().map(QuestionMapper::entityToJson).collect(Collectors.toList());
+        List<QuestionJSON> questions = quiz.getQuestions().values().stream().map(QuestionMapper::entityToJson).collect(Collectors.toList());
         return questions;
     }
 
@@ -106,25 +106,10 @@ public class QuizService {
         List<Quiz> quizList = quizRepository.findAll();
 
         List<Quiz> result = quizList.stream()
-
-                .filter(quiz -> username == null ||
-                        username != null &&
-                                quiz.getStudents().stream().anyMatch(student -> student.getUsername().equals(username))
-                )
-
-                .filter(quiz -> date == null || date != null &&
-                        DateUtil.isBefore(quiz.getDate(), date))
-
-                .filter(quiz -> year == 0 ||
-                        year != 0 && quiz.getStudents() != null &&
-                                quiz.getStudents().stream().anyMatch(student -> student.getYear() == year)
-                )
-
-                .filter(quiz -> groupNumber == null ||
-                        groupNumber != null &&
-                                quiz.getStudents().stream().anyMatch(student -> student.getGroup().equals(groupNumber))
-                )
-
+                .filter(quiz -> (username == null) || quiz.getStudents().stream().anyMatch(student -> student.getUsername().equals(username)))
+                .filter(quiz -> (date == null) || DateUtil.isLater(quiz.getDate(), date))
+                .filter(quiz -> (year == 0) || quiz.getStudents() != null && quiz.getStudents().stream().anyMatch(student -> student.getYear() == year))
+                .filter(quiz -> (groupNumber == null) || quiz.getStudents().stream().anyMatch(student -> student.getGroup().equals(groupNumber)))
                 .collect(Collectors.toList());
 
         return result.stream().map(QuizMapper::entityToJson).collect(Collectors.toList());

@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Builder
 @Getter
@@ -30,11 +31,12 @@ public class Quiz {
     @Column(name = "date")
     private String date;
 
-    @ManyToMany(mappedBy = "quizList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "quizList", fetch = FetchType.LAZY)
     private List<User> students;
 
-    @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Question> questions;
+    @OneToMany(mappedBy = "quiz", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @MapKey(name = "id")
+    private Map<Integer, Question> questions;
 
     @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
     private List<Evaluation> evaluations;
@@ -43,8 +45,7 @@ public class Quiz {
         if (students == null) {
             students = new ArrayList<>();
             students.add(user);
-        }
-        else if(!students.contains(user)){
+        } else if (!students.contains(user)) {
             students.add(user);
         }
     }

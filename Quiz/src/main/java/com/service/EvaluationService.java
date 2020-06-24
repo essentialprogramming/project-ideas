@@ -45,7 +45,7 @@ public class EvaluationService {
         evaluation.setStudent(user);
 
         for (AnswerInput answerInput : input.getUserAnswers()) {
-            Question question = questionRepository.findById(answerInput.getQuestionId()).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Question with id " + answerInput.getQuestionId() + " not found."));
+            Question question = quiz.getQuestions().get(answerInput.getQuestionId());
             UserAnswer userAnswer = new UserAnswer(answerInput.getAnswer(), question);
             userAnswer.setQuestion(question);
             userAnswer.setEvaluation(evaluation);

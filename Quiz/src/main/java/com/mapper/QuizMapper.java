@@ -18,7 +18,7 @@ public class QuizMapper {
                 .level(quiz.getLevel())
                 .date(String.valueOf(quiz.getDate()))
                 .students(quiz.getStudents() != null ? quiz.getStudents().stream().map(User::getUsername).collect(Collectors.toList()) : new ArrayList<>())
-                .questions(quiz.getQuestions().stream().map(Question::getQuestion).collect(Collectors.toList()))
+                .questions(quiz.getQuestions().values().stream().map(Question::getQuestion).collect(Collectors.toList()))
                 .build();
 
     }
@@ -27,7 +27,7 @@ public class QuizMapper {
         return Quiz.builder()
                 .name(input.getName())
                 .level(input.getLevel())
-                .questions(input.getQuestions().stream().map(QuestionMapper::questionToEntity).collect(Collectors.toList()))
+                .questions(input.getQuestions().stream().map(QuestionMapper::questionToEntity).collect(Collectors.toMap(Question::getId, question -> question)))
                 .build();
     }
 }
