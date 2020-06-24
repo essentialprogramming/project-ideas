@@ -39,7 +39,6 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 
 import static com.util.cloud.DeploymentConfiguration.getProperty;
-import static io.undertow.Handlers.websocket;
 
 public final class UndertowServer {
 

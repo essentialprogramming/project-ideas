@@ -1,4 +1,4 @@
-package com.config;
+package com.controller;
 
 import com.entities.Customer;
 import com.service.CustomerService;
