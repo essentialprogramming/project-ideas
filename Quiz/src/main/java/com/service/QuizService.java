@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,9 @@ public class QuizService {
     private QuizRepository quizRepository;
     private UserRepository userRepository;
 
+    @PersistenceUnit
+    private EntityManagerFactory emf;
+
     @Autowired
     public QuizService(QuizRepository quizRepository, UserRepository userRepository) {
         this.quizRepository = quizRepository;
@@ -36,10 +40,17 @@ public class QuizService {
 
     @Transactional
     public List<QuizJSON> getAll(String username) {
-        User user = userRepository.findById(username).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "User " + username + " not found."));
 
-        if (user.getQuizList() != null) {
-            return user.getQuizList().stream().map(QuizMapper::entityToJson).collect(Collectors.toList());
+        String sql = "select new com.entities.Quiz(q.id, q.name) from quiz q inner join q.students t where t.username = :username";
+        EntityManager entityManager = emf.createEntityManager();
+
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("username", username);
+
+        List<Quiz> quizList = query.getResultList();
+
+        if (quizList != null) {
+            return quizList.stream().map(QuizMapper::entityToJson).collect(Collectors.toList());
         } else return new ArrayList<>();
     }
 
