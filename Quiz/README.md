@@ -1,4 +1,7 @@
-# undertow-spring-jaxrs-starter
+# Quiz app
+
+### ❄ Project structure 
+![Domain Model Diagram](src/main/resources/img/Quiz_-_Domain_Model.png)
 
 ### 💎 Database schema
 
