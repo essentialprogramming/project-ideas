@@ -28,7 +28,7 @@ public class JPAConfig {
         HikariConfig config = new HikariConfig();
         config.setMinimumIdle(3);
         config.setMaximumPoolSize(10);
-        config.setConnectionTimeout(3000);
+        config.setConnectionTimeout(20000);
         config.setIdleTimeout(TimeUnit.SECONDS.toMillis(10));
         config.setValidationTimeout(TimeUnit.SECONDS.toMillis(2));
         config.setDriverClassName(com.mysql.jdbc.Driver.class.getName());

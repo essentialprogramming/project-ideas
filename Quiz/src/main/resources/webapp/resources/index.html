@@ -1,2 +1,11 @@
-<h3>If you can read this, you can read dude ..</h3>
-<h3>Welcome on your home page !</h3>
+<script>
+
+    async function start() {
+        window.location = `/quiz`;
+    }
+
+    start()
+        .then(console.log("Application started"))
+        .catch(error => console.log("Application not started, due to " + error))
+
+</script>

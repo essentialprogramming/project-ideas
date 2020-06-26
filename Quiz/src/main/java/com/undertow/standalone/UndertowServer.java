@@ -77,7 +77,7 @@ public final class UndertowServer {
                 .setContextPath("/")
                 .addListeners(createContextLoaderListener(getSpringApplicationContext()))
                 .setResourceManager(new ClassPathResourceManager(Server.class.getClassLoader(), "webapp/resources"))
-                .addWelcomePage("quiz.html")
+                .addWelcomePage("index.html")
                 .setDeploymentName(deploymentName)
 
                 .addServlets(
@@ -113,7 +113,7 @@ public final class UndertowServer {
 
         //Open API resource handler
         final ResourceHandler resourceHandler = new ResourceHandler(new ClassPathResourceManager(Server.class.getClassLoader(), "apidoc"))
-                .addWelcomeFiles("quiz.html")
+                .addWelcomeFiles("index.html")
                 .setDirectoryListingEnabled(false);
 
 

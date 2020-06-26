@@ -7,7 +7,7 @@ function docReady(fn) {
         document.addEventListener("DOMContentLoaded", fn);
     }
 }
-const loadComponent = async element => {
+const loadComponent = async (element, index) => {
     const url = element.getAttribute('data-include');
     const response = await fetch(`${url}`)
     const html = await response.text();
