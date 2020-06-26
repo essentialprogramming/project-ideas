@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URL;
 
 
 @WebServlet("quiz/*")
@@ -31,9 +32,12 @@ public class QuizServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        if (SessionUtils.getAttribute(request,"user") != null) {
+        if (SessionUtils.getAttribute(request, "user") != null) {
             context.getRequestDispatcher("/static/home.html").forward(request, response);
-        } else
-            response.sendRedirect("/login?redirect_uri=http://localhost:8080/quiz");
+        } else {
+            URL redirectURL = new URL(request.getRequestURL().toString());
+
+            response.sendRedirect("/login?redirect_uri="+redirectURL);
+        }
     }
 }
