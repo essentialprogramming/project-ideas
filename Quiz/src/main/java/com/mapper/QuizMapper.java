@@ -7,9 +7,12 @@ import com.model.QuizInput;
 import com.output.QuizJSON;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class QuizMapper {
+
 
     public static QuizJSON entityToJson(Quiz quiz) {
         return QuizJSON.builder()
@@ -24,10 +27,17 @@ public class QuizMapper {
     }
 
     public static Quiz quizToEntity(QuizInput input) {
+        final AtomicInteger counter = new AtomicInteger(0);
+        final Function<AtomicInteger, Integer> increment = AtomicInteger::getAndIncrement;
+        final Function<AtomicInteger, Integer> nextIndex = AtomicInteger::get;
         return Quiz.builder()
                 .name(input.getName())
                 .level(input.getLevel())
-                .questions(input.getQuestions().stream().map(QuestionMapper::questionToEntity).collect(Collectors.toMap(Question::getId, question -> question)))
+                .questions(input.getQuestions()
+                        .stream()
+                        .peek(question -> increment.apply(counter))
+                        .map(QuestionMapper::questionToEntity)
+                        .collect(Collectors.toMap(question -> nextIndex.apply(counter), question -> question)))
                 .build();
     }
 }

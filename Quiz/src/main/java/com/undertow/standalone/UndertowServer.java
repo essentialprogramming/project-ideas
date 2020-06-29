@@ -11,8 +11,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.ServletException;
 
+import com.config.AuthorizationApplicationConfig;
 import com.controller.*;
-import com.service.QuestionService;
 import com.util.jsp.TldLocator;
 import io.undertow.jsp.HackInstanceManager;
 import io.undertow.jsp.JspServletBuilder;
@@ -37,18 +37,11 @@ import io.undertow.server.handlers.resource.ClassPathResourceManager;
 import io.undertow.server.handlers.resource.ResourceHandler;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
-import io.undertow.websockets.WebSocketConnectionCallback;
-import io.undertow.websockets.WebSocketProtocolHandshakeHandler;
-import io.undertow.websockets.core.AbstractReceiveListener;
-import io.undertow.websockets.core.BufferedTextMessage;
-import io.undertow.websockets.core.WebSocketChannel;
-import io.undertow.websockets.core.WebSockets;
-import io.undertow.websockets.spi.WebSocketHttpExchange;
+
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 
 import static com.util.cloud.DeploymentConfiguration.getProperty;
-import static io.undertow.Handlers.websocket;
 
 public final class UndertowServer {
 
@@ -84,6 +77,11 @@ public final class UndertowServer {
                         servlet("jerseyServlet", ServletContainer.class)
                                 .addInitParam("javax.ws.rs.Application", ApplicationConfig.class.getName())
                                 .addMapping("/api/*")
+                                .setLoadOnStartup(1)
+                                .setAsyncSupported(true),
+                        servlet("authServlet", ServletContainer.class)
+                                .addInitParam("javax.ws.rs.Application", AuthorizationApplicationConfig.class.getName())
+                                .addMapping("/api/auth/*")
                                 .setLoadOnStartup(1)
                                 .setAsyncSupported(true),
                         servlet("loginServlet", LoginServlet.class)

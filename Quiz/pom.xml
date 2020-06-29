@@ -9,15 +9,15 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <io.undertow.version>2.0.28.Final</io.undertow.version>
-        <org.glassfish.jersey.version>2.30</org.glassfish.jersey.version>
+        <io.undertow.version>2.1.3.Final</io.undertow.version>
+        <org.glassfish.jersey.version>2.31</org.glassfish.jersey.version>
         <org.jboss.weld.version>3.1.3.Final</org.jboss.weld.version>
         <el-api.version>3.0.0</el-api.version>
         <io.swagger.version>2.0.6</io.swagger.version>
-        <com.fasterxml.jackson.version>2.10.1</com.fasterxml.jackson.version>
+        <com.fasterxml.jackson.version>2.11.1</com.fasterxml.jackson.version>
         <kotlin.version>1.3.10</kotlin.version>
-        <org.springframework.version>5.2.4.RELEASE</org.springframework.version>
-        <hibernate.version>5.4.9.Final</hibernate.version>
+        <org.springframework.version>5.2.7.RELEASE</org.springframework.version>
+        <hibernate.version>5.4.18.Final</hibernate.version>
     </properties>
 
     <dependencies>
@@ -124,7 +124,7 @@
         <dependency>
             <groupId>org.glassfish.jersey.ext</groupId>
             <artifactId>jersey-spring5</artifactId>
-            <version>2.30.1</version>
+            <version>2.31</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.json/json -->
@@ -202,6 +202,12 @@
             <version>${io.swagger.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
+            <version>${io.swagger.version}</version>
+        </dependency>
+
         <!-- Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -243,6 +249,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
 
@@ -253,7 +260,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>uber-${artifactId}-${version}</finalName>
+                    <finalName>uber-${project.artifactId}-${project.version}</finalName>
                     <transformers>
                         <transformer
                                 implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
@@ -267,6 +274,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>

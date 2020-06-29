@@ -6,6 +6,9 @@ import com.service.AuthenticationService;
 import com.util.web.SessionUtils;
 import com.web.json.JsonResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +29,15 @@ public class AuthenticationController {
     @Path("authenticate")
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(hidden = true)
+    @Operation(summary = "Authorization resource", tags = { "Authorization", },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Redirect URL if user successfully authenticated",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = JsonResponse.class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = JsonResponse.class))),
+            })
     public JsonResponse authenticate(@QueryParam("redirect_uri") String redirectUri, UserInput profileInput) {
         String username = profileInput.getUsername();
 
@@ -48,6 +59,12 @@ public class AuthenticationController {
     @Path("register")
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Authorization resource", tags = { "Authorization", },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User successfully registered",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = JsonResponse.class))),
+            })
     public JsonResponse register(UserInput profileInput) {
         service.register(profileInput);
         return new JsonResponse()

@@ -29,8 +29,8 @@ public class QuizService {
     private QuizRepository quizRepository;
     private UserRepository userRepository;
 
-    @PersistenceUnit
-    private EntityManagerFactory emf;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     public QuizService(QuizRepository quizRepository, UserRepository userRepository) {
@@ -42,7 +42,6 @@ public class QuizService {
     public List<QuizJSON> getAll(String username) {
 
         String sql = "select new com.entities.Quiz(q.id, q.name) from quiz q inner join q.students t where t.username = :username";
-        EntityManager entityManager = emf.createEntityManager();
 
         Query query = entityManager.createQuery(sql);
         query.setParameter("username", username);
